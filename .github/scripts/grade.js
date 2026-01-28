@@ -73,12 +73,15 @@ ${feedbackRows.join('\n')}
 ### 🏆 Total Score: ${score} / ${MAX_SCORE}
 `;
 
-    // Write to GitHub Action Summary (The "Pretty" View)
+    // 1. Write to GitHub Action Summary (The "Pretty" View)
     if (process.env.GITHUB_STEP_SUMMARY) {
         fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
     }
 
-    // Console Output (For Logs)
+    // 2. Write to a file for the PR Commenter
+    fs.writeFileSync('grading-feedback.md', summary);
+
+    // 3. Console Output (For Logs)
     console.log(summary);
 
     if (score < 8) process.exit(1); // Mark X if score is low
